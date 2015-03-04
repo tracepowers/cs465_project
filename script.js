@@ -1,5 +1,6 @@
 	var text = 'LqRZ2_w56U0';
 	var listData = [ ];
+	var firsttime = true;
 function myJsFunction(){
     	text=document.getElementById('input1').value;
     	//alert(text);
@@ -10,23 +11,34 @@ function myJsFunction(){
     	}
     	makelist();
     	// 2. This code loads the IFrame Player API code asynchronously.
-    	if(listData.length == 1 && typeof tag === "undefined") { 
+    	if(firsttime) { 
         var tag = document.createElement('script');
 	
       tag.src = "https://www.youtube.com/iframe_api";
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
+	firsttime=false;
       // 3. This function creates an <iframe> (and YouTube player)
       //    after the API code downloads.
       var player;
-      }else if(listData.length==1){
+      }else if(listData.length===1 && !firsttime){
+      	alert("i am here");
       	var player;
-      	onYouTubeIframeAPIReady();
+      	createPlayer();
       }
  }
 
-      
+      function createPlayer() {
+          player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: text,
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        })
+      }
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '390',
